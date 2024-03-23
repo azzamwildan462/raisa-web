@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ini untuk tambah data</title>
+</head>
+<body>
+    <h1>Tambah konten</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name", required="true"><br><br>
+
+        <label>Choose an option:</label><br>
+        <input type="radio" id="is_video" name="option" value="is_video" checked>
+        <label for="is_video">Video</label><br>
+        <input type="radio" id="is_image" name="option" value="is_image">
+        <label for="is_image">Image</label><br><br>
+
+        <div id="durationInput" style="display: none;">
+            <label for="image_duration">Duration:</label><br>
+            <input type="text" id="image_duration" name="image_duration"><br><br>
+        </div>
+
+        <input type="file" name="file" accept=".txt,.pdf,.doc,.docx" required="true"><br><br>
+        <input type="submit" value="upload_konten">
+    </form>
+
+    <script>
+        document.getElementById("is_video").addEventListener("change", function() {
+            if (this.checked) {
+                document.getElementById("durationInput").style.display = "none";
+            } else {
+                document.getElementById("durationInput").style.display = "block";
+            }
+        });
+        document.getElementById("is_image").addEventListener("change", function() {
+            if (this.checked) {
+                document.getElementById("durationInput").style.display = "block";
+            } else {
+                document.getElementById("durationInput").style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+</html>
