@@ -6,6 +6,7 @@ import zipfile
 import shutil
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, decode_token
 import datetime
+import socket
 
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -14,6 +15,9 @@ upload_folder = raisa_ui_assets + "/konten"
 app.config['UPLOAD_FOLDER'] = upload_folder
 app.config['JWT_SECRET_KEY'] = "The-key-is-very-secret"
 jwt = JWTManager(app)
+
+PORT_MONITOR_ATAS = 65530
+PORT_MONITOR_BAWAH = 65531
 
 print("Files placed here: ", upload_folder)
 
@@ -198,6 +202,13 @@ def verif_jwt_admin(request):
         return False
 
 
+def send_udp_trigger(message="its"):
+    # Create a UDP socket
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+        sock.sendto(message.encode(), ('127.0.0.1', PORT_MONITOR_ATAS))
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock2:
+        sock2.sendto(message.encode(), ('127.0.0.1', PORT_MONITOR_BAWAH))
+
 
 #==================================================================================================
 
@@ -311,10 +322,8 @@ def tambah_konten():
         if konten_type == 1:
             with open(new_dir + "/duration_ms.txt", "w") as f:
                 f.write(image_duration)
-        if konten_type == 9:
-            print("SAVING MARKDOWS")
-            
-
+        
+        send_udp_trigger()
         return return_string
 
     return render_template('tambah_konten.html')
@@ -346,6 +355,7 @@ def hapus_konten():
             konten_type_str = 'markdown'
         
         if remove_content(int(konten_type), name):
+            send_udp_trigger()
             return 'konten ' + konten_type_str + " " + name + ' berhasil dihapus'
         else:
             return 'konten ' + konten_type_str + " " + name + ' tidak ditemukan'
