@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hapus konten</title>
+</head>
+<body>
+    <h1>Hapus konten</h1>
+    <form method="post" enctype="multipart/form-data">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name", required="true"><br><br>
+
+        <label>Choose an option:</label><br>
+        <input type="radio" id="is_video" name="option" value="is_video" checked>
+        <label for="is_video">Video</label><br>
+        <input type="radio" id="is_image" name="option" value="is_image">
+        <label for="is_image">Image</label><br>
+        <input type="radio" id="is_md" name="option" value="is_md" checked>
+        <label for="is_md">Markdown</label><br><br>
+
+        <input type="submit" value="hapus_konten">
+    </form>
+</body>
+</html>
