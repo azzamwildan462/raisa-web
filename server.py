@@ -205,6 +205,7 @@ def verif_jwt_admin(request):
 def clear_cookie():
     response = make_response(jsonify({'message': 'JWT token cleared from cookie'}), 200)
     # Set the cookie's value to an empty string
+    response = make_response(redirect('/admin'))
     response.set_cookie('access_token', '', expires=0)
     return response
 
@@ -221,7 +222,7 @@ def admin():
         access_token = create_access_token(identity="admin", expires_delta=datetime.timedelta(hours=1))
         response = make_response(redirect('/tambah_konten'))
         response.set_cookie('access_token', value=access_token, httponly=True)
-        return response, 200
+        return response
 
     return render_template('admin.html')
 
