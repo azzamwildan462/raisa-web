@@ -313,6 +313,7 @@ def tambah_konten():
                 zip_ref.extractall(new_dir)
             
             sanitize_markdowns(new_dir)
+            send_udp_trigger()
             return 'konten ' + konten_type_str + " " + name + ' berhasil ditambahkan'
 
         # Save main file
