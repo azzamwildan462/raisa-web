@@ -26,3 +26,11 @@ systemctl --user stop raisa-web.service # untuk stop
 Jangan lupa untuk menetapkan env var UI_ASSETS pada raisa-web.service   
 Web bisa diakses di port 65500
 
+## MISC 
+### Install 
+```
+mkdir -p ${HOME}/.config/systemd/user 
+cp update-cuaca.* ${HOME}/.config/systemd/user/.
+systemctl --user daemon-reload
+```
+
