@@ -149,7 +149,6 @@ def convert_relative_links_to_absolute(markdown_file, current_dir):
         if os.path.isabs(relative_path):
             return original
 
-        print(original)
         result3 = re.search(pattern_kotak,original)
 
         if result3:
@@ -209,8 +208,103 @@ def send_udp_trigger(message="its"):
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock2:
         sock2.sendto(message.encode(), ('127.0.0.1', PORT_MONITOR_BAWAH))
 
+def get_all_contents(type_filter = []):
+    contents = []
+    for dir in os.listdir(upload_folder):
+        pattern = r'(\d+)_(\d+)_(.*)$'
+        match = re.match(pattern, dir)
+
+        konten_type = 0
+        konten_id = 0
+        konten_name = ''
+
+        if match:
+            konten_type = match.group(1)
+            konten_id = match.group(2)
+            konten_name = match.group(3)
+
+            if len(type_filter) == 0:
+                if int(konten_type) == 0:
+                    contents.append({'name': konten_name, 'type': 'video'})
+                elif int(konten_type) == 1:
+                    contents.append({'name': konten_name, 'type': 'image'})
+                elif int(konten_type) == 9:
+                    contents.append({'name': konten_name, 'type': 'markdown'})
+            else:
+                for i in type_filter:
+                    if int(konten_type) == i:
+                        if int(konten_type) == 0:
+                            contents.append({'name': konten_name, 'type': 'video'})
+                        elif int(konten_type) == 1:
+                            contents.append({'name': konten_name, 'type': 'image'})
+                        elif int(konten_type) == 9:
+                            contents.append({'name': konten_name, 'type': 'markdown'})
+
+    return contents
 
 #==================================================================================================
+
+@app.route('/reg_wajah', methods=['GET'])
+def reg_wajah():
+
+    return render_template('reg_wajah.html')
+
+@app.route('/hapus_konten_by_name', methods=['GET'])
+def hapus_konten_by_name():
+    is_verified = verif_jwt_admin(request)
+    if not is_verified:
+        return redirect('/admin')
+
+    name = ""
+    konten_type = 0
+    if not 'name' in request.args:
+        return 'Name not found'
+    
+    if not 'type' in request.args:
+        return 'Type not found'
+
+    name = request.args['name']
+    type_buffer = request.args['type']
+
+    if type_buffer == "video":
+        konten_type = 0
+    elif type_buffer == "image":
+        konten_type = 1
+    elif type_buffer == "markdown":
+        konten_type = 9
+    else:
+        return 'Type not found'
+
+    if remove_content(int(konten_type), name):
+        send_udp_trigger()
+        return redirect('/konten')
+    else:
+        return redirect('/konten')
+
+@app.route('/')
+def index():
+    return render_template('index.html')    
+
+@app.route('/konten')
+def konten():
+    is_verified = verif_jwt_admin(request)
+    if not is_verified:
+        return redirect('/admin')
+
+    # Get type filter
+    type_filter = []
+    if 'filt_video' in request.args:
+        type_filter.append(0)
+    if 'filt_image' in request.args:
+        type_filter.append(1)
+    if 'filt_md' in request.args:
+        type_filter.append(9)
+
+    if not 'filt_video' in request.args and not 'filt_image' in request.args and not 'filt_md' in request.args:
+        type_filter = [0,1,9]
+
+    contents = get_all_contents(type_filter)
+    return render_template('konten.html', contents=contents)
 
 @app.route('/clear_cookie')
 def clear_cookie():
@@ -222,16 +316,20 @@ def clear_cookie():
 
 @app.route('/admin',methods=['GET', 'POST'])
 def admin():
+    is_verified = verif_jwt_admin(request)
+    if is_verified:
+        return redirect('/konten')
+
     if request.method == 'POST':
         password = request.form['password']
 
         ret = admin_auth(password)
 
         if not ret:
-            return 'Password salah'
+            return render_template('admin.html')
         
         access_token = create_access_token(identity="admin", expires_delta=datetime.timedelta(hours=1))
-        response = make_response(redirect('/tambah_konten'))
+        response = make_response(redirect('/konten'))
         response.set_cookie('access_token', value=access_token, httponly=True)
         return response
 
@@ -268,15 +366,15 @@ def tambah_konten():
             konten_type = 9
             konten_type_str = 'markdown'
         
-        print("Name: ", name)
-        print("Adding file: ", file.filename)
-        print("Image duration: ", image_duration)
-        print("Is image: ", option)
+        # print("Name: ", name)
+        # print("Adding file: ", file.filename)
+        # print("Image duration: ", image_duration)
+        # print("Is image: ", option)
 
 
 
         konten_id, konten_path = get_id_by_name(int(konten_type), name)
-        print("Konten id: ", konten_id)
+        # print("Konten id: ", konten_id)
 
         return_string = ''
         new_dir = ''
@@ -285,22 +383,22 @@ def tambah_konten():
         if konten_id == -1:
             # Get the first fit id
             first_fit_id = get_first_fit_id(int(konten_type))
-            print("First fit id: ", first_fit_id)
+            # print("First fit id: ", first_fit_id)
 
             new_dir = make_a_dir(int(konten_type), first_fit_id, name)
-            print("New dir: ", new_dir)
+            # print("New dir: ", new_dir)
 
             new_file_name = unknown_to_main(file.filename)
-            print("New file name: ", new_file_name)
+            # print("New file name: ", new_file_name)
 
             return_string = 'konten ' + konten_type_str + " " + name + ' berhasil ditambahkan'
         else:
-            print("Konten already exist")
+            # print("Konten already exist")
             new_dir = konten_path
-            print("New dir: ", new_dir)
+            # print("New dir: ", new_dir)
 
             new_file_name = unknown_to_main(file.filename)
-            print("New file name: ", new_file_name)
+            # print("New file name: ", new_file_name)
 
             clear_dir(new_dir)
 
@@ -308,7 +406,7 @@ def tambah_konten():
         
         # Save zip file
         if konten_type == 9 and file.filename.endswith('.zip'):
-            print("ZIP FILE DETECTED")
+            # print("ZIP FILE DETECTED")
             with zipfile.ZipFile(file, 'r') as zip_ref:
                 zip_ref.extractall(new_dir)
             
@@ -339,9 +437,6 @@ def hapus_konten():
         name = request.form['name']
         option = request.form['option']
 
-        print("Name: ", name)
-        print("Option: ", option)
-
         konten_type = 0
         konten_type_str = ''
 
@@ -354,6 +449,8 @@ def hapus_konten():
         elif option == "is_md":
             konten_type = 9
             konten_type_str = 'markdown'
+        else:
+            return 'Type not found'
         
         if remove_content(int(konten_type), name):
             send_udp_trigger()

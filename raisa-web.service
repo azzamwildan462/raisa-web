@@ -1,0 +1,14 @@
+[Unit]
+Description=RAISA WEB INTERFACE
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Environment="UI_ASSETS=/home/wildan/proyek/qt/coba0/assets"
+Type=simple
+Restart=on-failure
+RestartSec=3
+ExecStart=/usr/bin/bash -c "cd /home/wildan/proyek/raisa/ui/raisa-web && ./run.sh"
+
+[Install]
+WantedBy=graphical.target

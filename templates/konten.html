@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Content Management System</title>
+</head>
+<body>
+    <h1>Contents Manaement System</h1>
+    <table border="1" >
+        <thead>
+            <tr>
+                <th>Tipe</th>
+                <th>Nama</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        {% for content in contents %}
+        <tr>
+            <td>{{ content['type'] }}</td>
+            <td>{{ content['name'] }}</td>
+            <td>
+                <a href="{{ url_for('hapus_konten_by_name', name=content['name'],type=content['type']) }}">Hapus</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <br>
+
+    <form method="get" enctype="multipart/form-data">
+        <input type="checkbox" name="filt_video" id="filt_video" value="true"> Filter Video <br>
+        <input type="checkbox" name="filt_image" id="filt_image" value="true"> Filter Image <br>
+        <input type="checkbox" name="filt_md" id="filt_md" value="true"> Filter Markdown <br>
+
+        <input type="submit" value="Filter konten">
+    </form>
+
+    <br>
+    <a href="/tambah_konten">Tambah konten</a>
+    <br>
+    <a href="/hapus_konten">Hapus konten</a>
+    <br>
+    <a href="/clear_cookie">LOGOUT</a>
+</body>
+</html>
