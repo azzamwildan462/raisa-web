@@ -176,6 +176,9 @@ def sanitize_markdowns(directory):
         elif entry.endswith(".md"):
             # Process Markdown files
             convert_relative_links_to_absolute(entry_path, directory)
+            # Create a symbolic link to the main Markdown file
+            if entry.endswith("README.md"):
+                os.symlink(entry,directory + "/main.md")
 
 def admin_auth(password):
     if password != "awk":
