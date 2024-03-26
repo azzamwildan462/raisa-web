@@ -18,14 +18,16 @@
         <input type="radio" id="is_image" name="option" value="is_image">
         <label for="is_image">Image</label><br>
         <input type="radio" id="is_md" name="option" value="is_md">
-        <label for="is_md">Markdown</label><br><br>
+        <label for="is_md">Markdown</label><br>
+        <input type="radio" id="is_ppt" name="option" value="is_ppt">
+        <label for="is_ppt">PPT</label><br><br>
 
         <div id="durationInput" style="display: none;">
             <label for="image_duration">Duration:</label><br>
             <input type="text" id="image_duration" name="image_duration"><br><br>
         </div>
 
-        <input type="file" name="file" accept=".mp4,.png,.jpg,.jpeg,.zip" required="true"><br><br>
+        <input id="input_file" type="file" name="file" accept=".mp4,.png,.jpg,.jpeg,.zip" required="true"><br><br>
         <input type="submit" value="Upload Konten">
     </form>
 
@@ -33,6 +35,7 @@
         document.getElementById("is_video").addEventListener("change", function() {
             if (this.checked) {
                 document.getElementById("durationInput").style.display = "none";
+                document.getElementById("input_file").setAttribute("accept", ".mp4");
             } else {
                 document.getElementById("durationInput").style.display = "block";
             }
@@ -40,6 +43,7 @@
         document.getElementById("is_image").addEventListener("change", function() {
             if (this.checked) {
                 document.getElementById("durationInput").style.display = "block";
+                document.getElementById("input_file").setAttribute("accept", ".png,.jpg,.jpeg");
             } else {
                 document.getElementById("durationInput").style.display = "none";
             }

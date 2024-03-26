@@ -231,6 +231,8 @@ def get_all_contents(type_filter = []):
                     contents.append({'name': konten_name, 'type': 'video'})
                 elif int(konten_type) == 1:
                     contents.append({'name': konten_name, 'type': 'image'})
+                elif int(konten_type) == 8:
+                    contents.append({'name': konten_name, 'type': 'ppt'})
                 elif int(konten_type) == 9:
                     contents.append({'name': konten_name, 'type': 'markdown'})
             else:
@@ -240,6 +242,8 @@ def get_all_contents(type_filter = []):
                             contents.append({'name': konten_name, 'type': 'video'})
                         elif int(konten_type) == 1:
                             contents.append({'name': konten_name, 'type': 'image'})
+                        elif int(konten_type) == 8:
+                            contents.append({'name': konten_name, 'type': 'ppt'})
                         elif int(konten_type) == 9:
                             contents.append({'name': konten_name, 'type': 'markdown'})
 
@@ -273,6 +277,8 @@ def hapus_konten_by_name():
         konten_type = 0
     elif type_buffer == "image":
         konten_type = 1
+    elif type_buffer == "ppt":
+        konten_type = 8
     elif type_buffer == "markdown":
         konten_type = 9
     else:
@@ -300,11 +306,13 @@ def konten():
         type_filter.append(0)
     if 'filt_image' in request.args:
         type_filter.append(1)
+    if 'filt_ppt' in request.args:
+        type_filter.append(8)
     if 'filt_md' in request.args:
         type_filter.append(9)
 
-    if not 'filt_video' in request.args and not 'filt_image' in request.args and not 'filt_md' in request.args:
-        type_filter = [0,1,9]
+    if not 'filt_video' in request.args and not 'filt_image' in request.args and not 'filt_md' in request.args and not 'filt_ppt' in request.args:
+        type_filter = [0,1,8,9]
 
     contents = get_all_contents(type_filter)
     return render_template('konten.html', contents=contents)
@@ -365,6 +373,9 @@ def tambah_konten():
         elif option == "is_video":
             konten_type = 0
             konten_type_str = 'video'
+        elif option == "is_ppt":
+            konten_type = 8
+            konten_type_str = 'ppt'
         elif option == "is_md":
             konten_type = 9
             konten_type_str = 'markdown'
@@ -416,6 +427,13 @@ def tambah_konten():
             sanitize_markdowns(new_dir)
             send_udp_trigger()
             return 'konten ' + konten_type_str + " " + name + ' berhasil ditambahkan'
+        elif konten_type == 8 and file.filename.endswith('.zip'):
+            # print("ZIP FILE DETECTED")
+            with zipfile.ZipFile(file, 'r') as zip_ref:
+                zip_ref.extractall(new_dir)
+            
+            send_udp_trigger()
+            return 'konten ' + konten_type_str + " " + name + ' berhasil ditambahkan'
 
         # Save main file
         file.save(os.path.join(new_dir, new_file_name))
@@ -449,6 +467,9 @@ def hapus_konten():
         elif option == "is_video":
             konten_type = 0
             konten_type_str = 'video'
+        elif option == "is_ppt":
+            konten_type = 8
+            konten_type_str = 'ppt'
         elif option == "is_md":
             konten_type = 9
             konten_type_str = 'markdown'
