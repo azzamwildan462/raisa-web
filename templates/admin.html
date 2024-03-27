@@ -1,17 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Page khusus admin</title>
-</head>
-<body>
-    <h1>Admin login</h1>
-    <form method="post" enctype="multipart/form-data">
-        <label for="password">Password:</label><br>
-        <input type="text" id="password" name="password", required="true"><br><br>
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='gambar/logo-its.ico') }}"
+      type="image/x-icon"
+    />
+    <link
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="text-center">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <img
+          class="mb-4"
+          src="{{ url_for('static', filename='gambar/logo-its.png') }}"
+          alt=""
+          width="72"
+          height="57"
+        />
+        <a class="navbar-brand" href="#">RAISA ITS</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarText"
+          aria-controls="navbarText"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#">CMS</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Tambah konten</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Hapus konten</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-        <input type="submit" value="admin">
-    </form>
-</body>
+    <h1 class="fw-bold">Admin login</h1>
+
+    <main class="form-signin d-flex justify-content-center">
+      <form method="post" enctype="multipart/form-data">
+        <img
+          class="mb-4"
+          src="{{ url_for('static', filename='gambar/logo-its.png') }}"
+          alt=""
+          width="72"
+          height="57"
+        />
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+        <div class="form-floating">
+          <input
+            type="text"
+            class="form-control"
+            id="password"
+            name="password"
+          />
+          <label for="password">Password</label>
+        </div>
+        <br />
+
+        <button
+          class="w-100 btn btn-lg btn-primary"
+          type="submit"
+          value="admin"
+        >
+          Sign in
+        </button>
+        <p class="mt-5 mb-3 text-muted">© 2024</p>
+      </form>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+  </body>
 </html>

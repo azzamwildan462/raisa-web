@@ -3,13 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ini landing page</title>
+    <title>RAISA ITS</title>
+    <link rel="icon" href="{{ url_for('static', filename='gambar/logo-its.ico') }}" type="image/x-icon">
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
 </head>
 <body>
-    <h1>Ini landing page</h1>
-    <h2>Tidak ada apa apa disini</h2>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='gambar/logo-its.png') }}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
+            RAISA ITS
+          </a>
+        </div>
+      </nav>
 
     <p>Untuk cek wajah anda terdaftar atau tidak, silahkan ke link di bawah ini</p>
     <a href="/reg_wajah">Registrasi Wajah</a>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
 </body>
 </html>

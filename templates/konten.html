@@ -1,48 +1,137 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Content Management System</title>
-</head>
-<body>
-    <h1>Contents Manaement System</h1>
-    <table border="1" >
-        <thead>
-            <tr>
-                <th>Tipe</th>
-                <th>Nama</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        {% for content in contents %}
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='gambar/logo-its.ico') }}"
+      type="image/x-icon"
+    />
+    <link
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="text-center">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <img
+          class="mb-4"
+          src="{{ url_for('static', filename='gambar/logo-its.png') }}"
+          alt=""
+          width="72"
+          height="57"
+        />
+        <a class="navbar-brand" href="#">RAISA ITS</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarText"
+          aria-controls="navbarText"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/konten"
+                >CMS</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/tambah_konten">Tambah konten</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/hapus_konten">Hapus konten</a>
+            </li>
+          </ul>
+          <a class="nav-link" href="/clear_cookie">LOGOUT</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- <h1>Contents Manaement System</h1> -->
+    <table class="table table-striped">
+      <thead>
         <tr>
-            <td>{{ content['type'] }}</td>
-            <td>{{ content['name'] }}</td>
-            <td>
-                <a href="{{ url_for('hapus_konten_by_name', name=content['name'],type=content['type']) }}">Hapus</a>
-            </td>
+          <th scope="col">Tipe</th>
+          <th scope="col">Nama</th>
+          <th scope="col">Aksi</th>
         </tr>
-        {% endfor %}
+      </thead>
+      {% for content in contents %}
+      <tr>
+        <td scope="row">{{ content['type'] }}</td>
+        <td>{{ content['name'] }}</td>
+        <td>
+          <a
+            href="{{ url_for('hapus_konten_by_name', name=content['name'],type=content['type']) }}"
+            >Hapus</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
     </table>
 
-    <br>
-    <br>
-
     <form method="get" enctype="multipart/form-data">
-        <input type="checkbox" name="filt_video" id="filt_video" value="true"> Filter Video <br>
-        <input type="checkbox" name="filt_image" id="filt_image" value="true"> Filter Image <br>
-        <input type="checkbox" name="filt_md" id="filt_md" value="true"> Filter Markdown <br>
-        <input type="checkbox" name="filt_ppt" id="filt_md" value="true"> Filter PPT <br>
-
-        <input type="submit" value="Filter konten">
+      <div class="d-flex justify-content-center gap-3">
+        <div class="form-check p-2">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="filt_video"
+            name="filt_video"
+          />
+          <label class="form-check-label" for="filt_video">
+            Filter Video
+          </label>
+        </div>
+        <div class="form-check p-2">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="filt_image"
+            name="filt_image"
+          />
+          <label class="form-check-label" for="filt_image">
+            Filter Image
+          </label>
+        </div>
+        <div class="form-check p-2">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="filt_md"
+            name="filt_md"
+          />
+          <label class="form-check-label" for="filt_md">
+            Filter Markdown
+          </label>
+        </div>
+        <div class="form-check p-2">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            value=""
+            id="filt_ppt"
+            name="filt_ppt"
+          />
+          <label class="form-check-label" for="filt_ppt"> Filter PPT </label>
+        </div>
+      </div>
+      <button class="w-10 btn btn-lg btn-primary" type="submit" value="konten">
+        Filter
+      </button>
     </form>
 
-    <br>
-    <a href="/tambah_konten">Tambah konten</a>
-    <br>
-    <a href="/hapus_konten">Hapus konten</a>
-    <br>
-    <a href="/clear_cookie">LOGOUT</a>
-</body>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
+  </body>
 </html>

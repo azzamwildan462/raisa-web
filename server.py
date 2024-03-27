@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 import datetime
 import socket
 
-app = Flask(__name__)
+app = Flask(__name__,static_url_path='/static')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 raisa_ui_assets = os.environ.get('UI_ASSETS')
 upload_folder = raisa_ui_assets + "/konten"
@@ -181,7 +181,7 @@ def sanitize_markdowns(directory):
                 os.symlink(entry,directory + "/main.md")
 
 def admin_auth(password):
-    if password != "awk":
+    if password != "itssurabaya":
         return False
     
     return True
