@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body class="mx-3">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">RAISA ITS</a>
@@ -51,10 +51,16 @@
     <main class="form-signin d-flex justify-content-center">
       <form method="post" enctype="multipart/form-data">
         <div class="form-floating">
-          <input type="text" class="form-control" id="name" name="name" />
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            required="true"
+          />
           <label for="name">Name</label>
         </div>
-        <div class="d-flex justify-content-center gap-3">
+        <div class="d-sm-flex justify-content-center gap-3">
           <div class="form-check p-2">
             <input
               class="form-check-input"
@@ -95,6 +101,30 @@
             />
             <label class="form-check-label" for="is_ppt"> PPT </label>
           </div>
+          <div class="form-check p-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              value="is_html_file"
+              id="is_html_file"
+              name="option"
+            />
+            <label class="form-check-label" for="is_html_file">
+              HTML file
+            </label>
+          </div>
+          <div class="form-check p-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              value="is_html_link"
+              id="is_html_link"
+              name="option"
+            />
+            <label class="form-check-label" for="is_html_link">
+              HTML link
+            </label>
+          </div>
         </div>
 
         <div class="form-floating" id="durationInput" style="display: none">
@@ -107,7 +137,17 @@
           <label for="image_duration">Duration in ms</label>
         </div>
 
-        <div class="input-group mb-3">
+        <div class="form-floating" id="htmlLink" style="display: none">
+          <input
+            type="text"
+            class="form-control"
+            id="html_link"
+            name="html_link"
+          />
+          <label for="html_link">HTML link: https://www.its.ac.id/</label>
+        </div>
+
+        <div class="input-group mb-3" id="uploadFile">
           <input
             class="form-control"
             id="input_file"
@@ -139,31 +179,74 @@
               .setAttribute("accept", ".mp4");
           }
           document.getElementById("durationInput").style.display = "none";
+          document.getElementById("htmlLink").style.display = "none";
+          document.getElementById("uploadFile").style.display = "flex";
         });
       document
         .getElementById("is_image")
         .addEventListener("change", function () {
           if (this.checked) {
-            document.getElementById("durationInput").style.display = "block";
+            document.getElementById("htmlLink").removeAttribute("required");
+            document
+              .getElementById("durationInput")
+              .setAttribute("required", "true");
+            document.getElementById("durationInput").style.display = "flex";
             document
               .getElementById("input_file")
               .setAttribute("accept", ".png,.jpg,.jpeg");
           } else {
             document.getElementById("durationInput").style.display = "none";
           }
+          document.getElementById("htmlLink").style.display = "none";
+          document.getElementById("uploadFile").style.display = "flex";
         });
       document.getElementById("is_md").addEventListener("change", function () {
         if (this.checked) {
           document.getElementById("input_file").setAttribute("accept", ".zip");
         }
         document.getElementById("durationInput").style.display = "none";
+        document.getElementById("htmlLink").style.display = "none";
+        document.getElementById("uploadFile").style.display = "flex";
       });
       document.getElementById("is_ppt").addEventListener("change", function () {
         if (this.checked) {
           document.getElementById("input_file").setAttribute("accept", ".zip");
         }
         document.getElementById("durationInput").style.display = "none";
+        document.getElementById("htmlLink").style.display = "none";
+        document.getElementById("uploadFile").style.display = "flex";
       });
+      document
+        .getElementById("is_html_file")
+        .addEventListener("change", function () {
+          if (this.checked) {
+            document
+              .getElementById("input_file")
+              .setAttribute("accept", ".zip");
+          }
+          document.getElementById("durationInput").style.display = "none";
+          document.getElementById("htmlLink").style.display = "none";
+          document.getElementById("uploadFile").style.display = "flex";
+        });
+      document
+        .getElementById("is_html_link")
+        .addEventListener("change", function () {
+          if (this.checked) {
+            document
+              .getElementById("htmlLink")
+              .setAttribute("required", "true");
+            document
+              .getElementById("image_duration")
+              .removeAttribute("required");
+            document.getElementById("htmlLink").style.display = "flex";
+            document.getElementById("uploadFile").style.display = "none";
+            // document.getElementById("uploadFile").removeAttribute("required");
+            document.getElementById("input_file").removeAttribute("required");
+          } else {
+            document.getElementById("htmlLink").style.display = "none";
+          }
+          document.getElementById("durationInput").style.display = "none";
+        });
     </script>
 
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>

@@ -180,6 +180,14 @@ def sanitize_markdowns(directory):
             if entry.endswith("README.md"):
                 os.symlink(entry,directory + "/main.md")
 
+def create_symlink_html(directory):
+    for entry in os.listdir(directory):
+        entry_path = os.path.join(directory, entry)
+        if os.path.isdir(entry_path):
+            create_symlink_html(entry_path)
+        elif entry.endswith("index.html"):
+            os.symlink(entry,directory + "/main.html")
+
 def admin_auth(password):
     if password != "itssurabaya":
         return False
@@ -235,6 +243,10 @@ def get_all_contents(type_filter = []):
                     contents.append({'name': konten_name, 'type': 'ppt'})
                 elif int(konten_type) == 9:
                     contents.append({'name': konten_name, 'type': 'markdown'})
+                elif int(konten_type) == 7:
+                    contents.append({'name': konten_name, 'type': 'html_file'})
+                elif int(konten_type) == 6:
+                    contents.append({'name': konten_name, 'type': 'html_link'})
             else:
                 for i in type_filter:
                     if int(konten_type) == i:
@@ -246,6 +258,10 @@ def get_all_contents(type_filter = []):
                             contents.append({'name': konten_name, 'type': 'ppt'})
                         elif int(konten_type) == 9:
                             contents.append({'name': konten_name, 'type': 'markdown'})
+                        elif int(konten_type) == 7:
+                            contents.append({'name': konten_name, 'type': 'html_file'})
+                        elif int(konten_type) == 6:
+                            contents.append({'name': konten_name, 'type': 'html_link'})
 
     return contents
 
@@ -281,6 +297,10 @@ def hapus_konten_by_name():
         konten_type = 8
     elif type_buffer == "markdown":
         konten_type = 9
+    elif type_buffer == "html_file":
+        konten_type = 7
+    elif type_buffer == "html_link":
+        konten_type = 6
     else:
         return 'Type not found'
 
@@ -310,9 +330,13 @@ def konten():
         type_filter.append(8)
     if 'filt_md' in request.args:
         type_filter.append(9)
+    if 'filt_html_file' in request.args:
+        type_filter.append(7)
+    if 'filt_html_link' in request.args:
+        type_filter.append(6)
 
-    if not 'filt_video' in request.args and not 'filt_image' in request.args and not 'filt_md' in request.args and not 'filt_ppt' in request.args:
-        type_filter = [0,1,8,9]
+    if not 'filt_video' in request.args and not 'filt_image' in request.args and not 'filt_md' in request.args and not 'filt_ppt' in request.args and not 'filt_html_file' in request.args and not 'filt_html_link' in request.args:
+        type_filter = []
 
     contents = get_all_contents(type_filter)
     return render_template('konten.html', contents=contents)
@@ -353,16 +377,16 @@ def tambah_konten():
         return redirect('/admin')
 
     if request.method == 'POST':
-        file = request.files['file']
 
-        # If the user does not select a file, the browser submits an empty part without filename
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
+        if 'file' in request.files:
+            file = request.files['file']
+
+
         
         name = request.form['name']
         option = request.form['option']
         image_duration = 0
+        html_link = ''
         konten_type = 0
         konten_type_str = ''
 
@@ -379,6 +403,19 @@ def tambah_konten():
         elif option == "is_md":
             konten_type = 9
             konten_type_str = 'markdown'
+        elif option == "is_html_file":
+            konten_type = 7
+            konten_type_str = 'html_file'
+        elif option == "is_html_link":
+            konten_type = 6
+            konten_type_str = 'html_link'
+            html_link = request.form['html_link']
+        else:
+            return 'Type not found'
+
+        # If the user does not select a file, the browser submits an empty part without filename
+        if file.filename == '' and konten_type != 6:
+            return redirect(request.url)
         
         # print("Name: ", name)
         # print("Adding file: ", file.filename)
@@ -420,28 +457,36 @@ def tambah_konten():
         
         # Save zip file
         if konten_type == 9 and file.filename.endswith('.zip'):
-            # print("ZIP FILE DETECTED")
             with zipfile.ZipFile(file, 'r') as zip_ref:
                 zip_ref.extractall(new_dir)
-            
             sanitize_markdowns(new_dir)
             send_udp_trigger()
             return 'konten ' + konten_type_str + " " + name + ' berhasil ditambahkan'
+
         elif konten_type == 8 and file.filename.endswith('.zip'):
-            # print("ZIP FILE DETECTED")
             with zipfile.ZipFile(file, 'r') as zip_ref:
                 zip_ref.extractall(new_dir)
-            
+            send_udp_trigger()
+            return 'konten ' + konten_type_str + " " + name + ' berhasil ditambahkan'
+        
+        elif konten_type == 7 and file.filename.endswith('.zip'):
+            with zipfile.ZipFile(file, 'r') as zip_ref:
+                zip_ref.extractall(new_dir)
+            create_symlink_html(new_dir)
             send_udp_trigger()
             return 'konten ' + konten_type_str + " " + name + ' berhasil ditambahkan'
 
         # Save main file
-        file.save(os.path.join(new_dir, new_file_name))
+        if konten_type != 6:
+            file.save(os.path.join(new_dir, new_file_name))
 
         # Save attribut file
         if konten_type == 1:
             with open(new_dir + "/duration_ms.txt", "w") as f:
                 f.write(image_duration)
+        elif konten_type == 6:
+            with open(new_dir + "/main.txt", "w") as f:
+                f.write(html_link)
         
         send_udp_trigger()
         return return_string
@@ -473,6 +518,12 @@ def hapus_konten():
         elif option == "is_md":
             konten_type = 9
             konten_type_str = 'markdown'
+        elif option == "is_html_file":
+            konten_type = 7
+            konten_type_str = 'html_file'
+        elif option == "is_html_link":
+            konten_type = 6
+            konten_type_str = 'html_link'
         else:
             return 'Type not found'
         

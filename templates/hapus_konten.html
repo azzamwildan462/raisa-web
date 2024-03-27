@@ -14,7 +14,7 @@
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body class="mx-3">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">RAISA ITS</a>
@@ -54,7 +54,7 @@
           <input type="text" class="form-control" id="name" name="name" />
           <label for="name">Name</label>
         </div>
-        <div class="d-flex justify-content-center gap-3">
+        <div class="d-sm-flex justify-content-center gap-3">
           <div class="form-check p-2">
             <input
               class="form-check-input"
@@ -94,6 +94,30 @@
               name="option"
             />
             <label class="form-check-label" for="is_ppt"> PPT </label>
+          </div>
+          <div class="form-check p-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              value="is_html_file"
+              id="is_html_file"
+              name="option"
+            />
+            <label class="form-check-label" for="is_html_file">
+              HTML file
+            </label>
+          </div>
+          <div class="form-check p-2">
+            <input
+              class="form-check-input"
+              type="radio"
+              value="is_html_link"
+              id="is_html_link"
+              name="option"
+            />
+            <label class="form-check-label" for="is_html_link">
+              HTML link
+            </label>
           </div>
         </div>
 

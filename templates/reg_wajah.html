@@ -1,25 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registrasi Wajah</title>
-    <link rel="icon" href="{{ url_for('static', filename='gambar/logo-its.ico') }}" type="image/x-icon">
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-</head>
-<body>
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='gambar/logo-its.ico') }}"
+      type="image/x-icon"
+    />
+    <link
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="mx-3">
     <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">
-            <img src="{{ url_for('static', filename='gambar/logo-its.png') }}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-            RAISA ITS
-          </a>
-        </div>
-      </nav>
-      
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img
+            src="{{ url_for('static', filename='gambar/logo-its.png') }}"
+            alt="Logo"
+            width="30"
+            height="24"
+            class="d-inline-block align-text-top"
+          />
+          RAISA ITS
+        </a>
+      </div>
+    </nav>
+
     <h1>REGISTRASI WAJAH</h1>
     <a href="/">Landing page</a>
 
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.js') }}"></script>
-</body>
+  </body>
 </html>
