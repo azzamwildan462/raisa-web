@@ -2,6 +2,7 @@ import requests
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
 import os
+import datetime
 
 CONFIG_daerah = "Jember"
 
@@ -78,9 +79,19 @@ if response.status_code == 200:
                                 dts_wind = timer.getElementsByTagName('value')[0].firstChild.data + "km/h"
             break
     
+    # Get the current date and time
+    current_datetime = datetime.datetime.now()
+    formatted_datetime = current_datetime.strftime("%a, %d %B %Y")
+
     # Save to json file 
     with open(os.environ.get('UI_ASSETS') + '/misc/data_cuaca.json', 'w') as file:
-        file.write(f'{{"kelembapan": "{dts_humidity}", "suhu": "{dts_temperatur}", "cuaca": "{dts_weather}", "kecepatan_angin": "{dts_wind}"}}')
+        file.write('{\n')
+        file.write(f'  "waktu": "{formatted_datetime}",\n')
+        file.write(f'  "kelembapan": "{dts_humidity}",\n')
+        file.write(f'  "suhu": "{dts_temperatur}",\n')
+        file.write(f'  "cuaca": "{dts_weather}",\n')
+        file.write(f'  "kecepatan_angin": "{dts_wind}"\n')
+        file.write('}\n')
         
 else:
     print(f"Failed to retrieve data: {response.status_code} - {response.reason}")
