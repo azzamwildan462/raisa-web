@@ -1,12 +1,12 @@
 [Unit]
-Description=Update data cuaca dari bmkg
+Description=Ini service untuk mendapatkan internet dari ITS 
 After=graphical.target
 StartLimitIntervalSec=0
 
 [Service]
 Environment="UI_ASSETS=/home/wildan/proyek/qt/coba0/assets"
 Type=oneshot
-ExecStart=/usr/bin/bash -c "cd /home/wildan/proyek/raisa/ui/raisa-web && python update_data_cuaca.py"
+ExecStart=/usr/bin/bash -c "cd /home/wildan/proyek/raisa/ui/raisa-web && python get_internet_its.py"
 
 [Install]
 WantedBy=graphical.target

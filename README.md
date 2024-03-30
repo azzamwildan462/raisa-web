@@ -27,10 +27,40 @@ Jangan lupa untuk menetapkan env var UI_ASSETS pada raisa-web.service
 Web bisa diakses di port 65500
 
 ## MISC 
-### Install 
+### Install Update Cuaca
 ```
 mkdir -p ${HOME}/.config/systemd/user 
 cp update-cuaca.* ${HOME}/.config/systemd/user/.
 systemctl --user daemon-reload
 ```
 
+### Run cronjob-like Update Cuaca 
+```
+systemctl --user start update-cuaca.timer
+```
+
+### Install Get Internet ITS 
+```
+mkdir -p ${HOME}/.config/systemd/user 
+cp get_internet_its.service ${HOME}/.config/systemd/user/.
+systemctl --user daemon-reload
+```
+
+### Run 
+```
+systemcel --user start get_internet_its.service
+```
+
+### Peringatan untuk Get Internet ITS 
+Pastikan executable browser nya pada get_internet_access.py biasanya menggunakan google-chrome atau chromium untuk mendapatkan path nya bisa melakukan `which google-chrome`
+
+
+
+## NOTES 
+Untuk install semua cukup gunakan command 
+```
+mkdir -p ${HOME}/.config/systemd/user 
+cp *.service ${HOME}/.config/systemd/user/.
+cp *.timer ${HOME}/.config/systemd/user/.
+systemctl --user daemon-reload
+```

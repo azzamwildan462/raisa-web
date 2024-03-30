@@ -1,6 +1,6 @@
 [Unit]
 Description=RAISA WEB INTERFACE
-After=network.target
+After=graphical.target
 StartLimitIntervalSec=0
 
 [Service]
