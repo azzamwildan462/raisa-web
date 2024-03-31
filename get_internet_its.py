@@ -35,7 +35,7 @@ async def check_internet_status():
     # Navigate to youtube.com 
     try:
         # Wait for navigation with a timeout of 10 seconds
-        response = await asyncio.wait_for(page.goto('https://youtube.com'), timeout=10)
+        response = await asyncio.wait_for(page.goto('https://github.com'), timeout=10)
 
         if response.status != 200:
             internet_state = -4
@@ -56,6 +56,8 @@ async def get_internet_access():
     # Navigate to the login page
     try:
         # Wait for navigation with a timeout of 10 seconds
+        response = await asyncio.wait_for(page.goto('https://myits-app.its.ac.id/internet/index.php'), timeout=10)
+        time.sleep(2)
         response = await asyncio.wait_for(page.goto('https://myits-app.its.ac.id/internet/auth.php'), timeout=10)
 
         if response.status != 200:
@@ -85,10 +87,11 @@ async def get_internet_access():
 
     # Wait for the page to load
     try:
-        await asyncio.wait_for(page.waitForNavigation(), timeout=19)
+        await asyncio.wait_for(page.waitForNavigation(), timeout=18)
     except asyncio.TimeoutError:
         internet_state = -1
         save_log()
+        print("TIMEOUT LOGIN")
         exit(1)
 
     # Get cookies
@@ -104,8 +107,10 @@ async def get_internet_access():
 
     if session_state_exists:
         internet_state = 0
+        print("SUCCESS")
     else:
         internet_state = -3
+        print("FAILD")
 
 # Open the file and read its contents
 with open(os.environ.get('UI_ASSETS') + '/misc/get_internet_its_credentials.txt', 'r') as file:
