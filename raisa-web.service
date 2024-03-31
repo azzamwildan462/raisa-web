@@ -4,11 +4,11 @@ After=multi-user.target
 StartLimitIntervalSec=0
 
 [Service]
-Environment="UI_ASSETS=/home/wildan/proyek/qt/coba0/assets"
+Environment="UI_ASSETS=/home/raisa/ui/assets"
 Type=simple
 Restart=always
 RestartSec=3
-ExecStart=/usr/bin/bash -c "cd /home/wildan/proyek/raisa/ui/raisa-web && ./run.sh"
+ExecStart=/usr/bin/bash -c "cd /home/raisa/ui/raisa-web && ./run.sh"
 
 [Install]
 WantedBy=default.target

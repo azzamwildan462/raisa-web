@@ -4,9 +4,9 @@ After=graphical.target
 StartLimitIntervalSec=0
 
 [Service]
-Environment="UI_ASSETS=/home/wildan/proyek/qt/coba0/assets"
+Environment="UI_ASSETS=/home/raisa/ui/assets"
 Type=oneshot
-ExecStart=/usr/bin/bash -c "cd /home/wildan/proyek/raisa/ui/raisa-web && python get_internet_its.py"
+ExecStart=/usr/bin/bash -c "cd /home/raisa/ui/raisa-web && python get_internet_its.py"
 
 [Install]
 WantedBy=graphical.target
