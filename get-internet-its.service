@@ -1,12 +1,13 @@
 [Unit]
 Description=Ini service untuk mendapatkan internet dari ITS 
-After=graphical.target
+After=multi-user.target
 StartLimitIntervalSec=0
 
 [Service]
-Environment="UI_ASSETS=/home/raisa/ui/assets"
+Environment="UI_ASSETS=/home/wildan/ui/assets"
+Environment="EXEC_PATH=/home/wildan/proyek/raisa/ui/raisa-web"
 Type=oneshot
-ExecStart=/usr/bin/bash -c "cd /home/raisa/ui/raisa-web && python get_internet_its.py"
+ExecStart=/usr/bin/bash -c "cd ${EXEC_PATH} && python get_internet_its.py"
 
 [Install]
-WantedBy=graphical.target
+WantedBy=default.target

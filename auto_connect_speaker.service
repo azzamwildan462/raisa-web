@@ -1,13 +1,13 @@
 [Unit]
-Description=Update data cuaca dari bmkg
+Description=Service auto connect for bluetooth speaker
 After=multi-user.target
 StartLimitIntervalSec=0
 
 [Service]
 Environment="UI_ASSETS=/home/wildan/ui/assets"
 Environment="EXEC_PATH=/home/wildan/proyek/raisa/ui/raisa-web"
-Type=oneshot
-ExecStart=/usr/bin/bash -c "cd ${EXEC_PATH} && python update_data_cuaca.py"
+Type=simple
+ExecStart=/usr/bin/bash -c "cd ${EXEC_PATH} && bash auto_connect_speaker.sh"
 
 [Install]
 WantedBy=default.target
