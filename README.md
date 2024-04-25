@@ -6,6 +6,7 @@ Install dependencies
 pip install flask
 pip install flask_jwt_extended
 pip install waitress
+pip install selenium
 ```
 
 ## Install 
@@ -52,7 +53,7 @@ systemcel --user start get_internet_its.service
 ```
 
 ### Peringatan untuk Get Internet ITS 
-Pastikan executable browser nya pada get_internet_access.py biasanya menggunakan google-chrome atau chromium untuk mendapatkan path nya bisa melakukan `which google-chrome`
+Pastikan executable browser nya pada get_internet_accessv2.py biasanya menggunakan google-chrome atau chromium untuk mendapatkan path nya bisa melakukan `which google-chrome`
 
 
 
